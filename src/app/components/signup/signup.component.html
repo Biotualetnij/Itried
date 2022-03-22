@@ -1,0 +1,50 @@
+<div class="sing-in-container">
+  <h2>Sign Up</h2>
+  <form #usersignup="ngForm" (ngSubmit)="signUp(usersignup.value)">
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Email address</label>
+      <input
+        type="email"
+        name="email"
+        class="form-control"
+        id="exampleInputEmail1"
+        aria-describedby="emailHelp"
+        ngModel
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <input
+        name="password"
+        type="password"
+        class="form-control"
+        id="exampleInputPassword1"
+        ngModel
+      />
+    </div>
+    <div class="mb-3 row">
+      <div class="col">
+        <input
+          type="text"
+          name="name"
+          class="form-control"
+          placeholder="First name"
+          aria-label="First name"
+          ngModel
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          name="surename"
+          class="form-control"
+          placeholder="Last name"
+          aria-label="Last name"
+          ngModel
+        />
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
