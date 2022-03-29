@@ -16,6 +16,7 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { CreateItemComponent } from './components/create-item/create-item.component';
 import { ShowMoreComponent } from './components/show-more/show-more.component';
+import { DataService } from './dataService';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import { ShowMoreComponent } from './components/show-more/show-more.component';
     FormsModule,
     HttpClientModule,
   ],
-  providers: [CookieService],
+  providers: [CookieService, DataService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { Subscription } from 'rxjs';
+import { DataService } from 'src/app/dataService';
 import { ShowMoreComponent } from '../show-more/show-more.component';
 
 @Component({
@@ -11,7 +13,16 @@ import { ShowMoreComponent } from '../show-more/show-more.component';
 export class MarketComponent implements OnInit {
   public itemsArr: any;
   modalRef?: BsModalRef;
-  constructor(private http: HttpClient, private modalService: BsModalService) {}
+  public subscription: Subscription;
+  constructor(
+    private http: HttpClient,
+    private modalService: BsModalService,
+    private ds: DataService
+  ) {
+    this.subscription = this.ds.getData().subscribe((x) => {
+      this.updateItems();
+    });
+  }
 
   openShowMore(data: any) {
     let state: ModalOptions = {
@@ -24,7 +35,7 @@ export class MarketComponent implements OnInit {
 
     this.modalRef = this.modalService.show(ShowMoreComponent, state);
   }
-  ngOnInit(): void {
+  updateItems() {
     this.http.get('https://localhost:7201/items').subscribe(
       (data) => {
         console.log('success', data);
@@ -32,5 +43,12 @@ export class MarketComponent implements OnInit {
       },
       (error) => console.log('oops', error)
     );
+  }
+  ngOnInit(): void {
+    this.updateItems();
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    // unsubscribe to ensure no memory leaks
   }
 }
