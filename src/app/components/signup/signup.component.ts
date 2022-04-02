@@ -42,6 +42,12 @@ export class SignupComponent implements OnInit {
             let today = new Date();
             today.setMinutes(today.getMinutes() + 1);
             this.cookieService.set('login', 'true', today);
+            today.setMinutes(today.getMinutes() + 4);
+            this.cookieService.set(
+              'userData',
+              JSON.stringify(data.userData),
+              today
+            );
             this.ds.sendData(true);
             this.router.navigate(['']);
           }
