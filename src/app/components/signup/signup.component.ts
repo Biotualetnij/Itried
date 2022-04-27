@@ -4,12 +4,14 @@ import { Router } from '@angular/router';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { CookieService } from 'ngx-cookie-service';
 import { DataService } from 'src/app/dataService';
-
+import * as CryptoJS from 'crypto-js';
+import { RegexService } from 'src/app/services/regex.service';
 interface user {
   Email: string;
   Password: string;
   FirstName: string;
   LastName: string;
+  Phone: string;
   State: string;
 }
 @Component({
@@ -27,11 +29,13 @@ export class SignupComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private cookieService: CookieService,
-    private ds: DataService
+    private ds: DataService,
+    private regexService: RegexService
   ) {}
 
   signUp(userData: user) {
     userData.State = '';
+    userData.Phone = '';
     const isCheckedUserFields = this.checkFields(userData);
 
     if (isCheckedUserFields) {
@@ -43,6 +47,7 @@ export class SignupComponent implements OnInit {
             today.setMinutes(today.getMinutes() + 1);
             this.cookieService.set('login', 'true', today);
             today.setMinutes(today.getMinutes() + 4);
+            data.userData.Password = this.encrypt(data.userData.Password);
             this.cookieService.set(
               'userData',
               JSON.stringify(data.userData),
@@ -56,35 +61,14 @@ export class SignupComponent implements OnInit {
       );
     }
   }
+  encrypt(string: string) {
+    var passPhrase = 'Secret Phassphrase';
 
-  checkPassword(password: string): boolean {
-    const passw = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
-    if (password.length === 0) {
-      return false;
-    }
-    if (password.match(passw)) {
-      return true;
-    }
-    return false;
-  }
-  checkEmail(email: string): boolean {
-    if (email.length === 0) {
-      return false;
-    }
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      return true;
-    }
-    return false;
-  }
-  checkForNumbAndSimb(field: string): boolean {
-    const regex = /^[a-zA-Z ]{2,30}$/;
-    if (field.length === 0) {
-      return false;
-    }
-    if (regex.test(field)) {
-      return true;
-    }
-    return false;
+    var encrypted = CryptoJS.AES.encrypt(string, passPhrase, {
+      mode: CryptoJS.mode.CFB,
+    });
+
+    return encrypted.toString();
   }
 
   ngOnInit(): void {}
@@ -92,12 +76,12 @@ export class SignupComponent implements OnInit {
   private checkFields(userData: user) {
     let result = [];
 
-    result.push(this.checkEmail(userData.Email));
+    result.push(this.regexService.checkEmail(userData.Email));
     this.isEmailRight = result[0];
-    result.push(this.checkPassword(userData.Password));
+    result.push(this.regexService.checkPassword(userData.Password));
     this.isPasswordRight = result[1];
-    result.push(this.checkForNumbAndSimb(userData.FirstName));
-    result.push(this.checkForNumbAndSimb(userData.LastName));
+    result.push(this.regexService.checkForNumbAndSimb(userData.FirstName));
+    result.push(this.regexService.checkForNumbAndSimb(userData.LastName));
     if (result[3] && result[2]) {
       this.isNameRight = true;
     } else {

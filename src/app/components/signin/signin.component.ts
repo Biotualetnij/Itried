@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import * as CryptoJS from 'crypto-js';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { CookieService } from 'ngx-cookie-service';
 import { DataService } from 'src/app/dataService';
@@ -10,6 +10,7 @@ interface user {
   Password: string;
   FirstName: string;
   LastName: string;
+  Phone: string;
   State: string;
 }
 @Component({
@@ -34,6 +35,8 @@ export class SigninComponent implements OnInit {
     userData.FirstName = '';
     userData.LastName = '';
     userData.State = '';
+    userData.Phone = '';
+    userData.State = '';
     this.isEmailCorrect = !this.checkEmail(userData.Email);
     if (this.checkEmail(userData.Email)) {
       this.http.post('https://localhost:7201/user/login', userData).subscribe(
@@ -47,6 +50,7 @@ export class SigninComponent implements OnInit {
             today.setMinutes(today.getMinutes() + 1);
             this.cookieService.set('login', 'true', today);
             today.setMinutes(today.getMinutes() + 4);
+            data.userData.Password = this.encrypt(data.userData.Password);
             this.cookieService.set(
               'userData',
               JSON.stringify(data.userData),
@@ -59,6 +63,15 @@ export class SigninComponent implements OnInit {
         (error) => console.log('oops', error)
       );
     }
+  }
+  encrypt(string: string) {
+    var passPhrase = 'Secret Phassphrase';
+
+    var encrypted = CryptoJS.AES.encrypt(string, passPhrase, {
+      mode: CryptoJS.mode.CFB,
+    });
+
+    return encrypted.toString();
   }
   checkEmail(email: string): boolean {
     if (email.length === 0) {
