@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { MarketComponent } from './components/market/market.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
+import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
     component: ProfilePageComponent,
     canActivate: [AuthGuard],
   },
+  { path: 'shoppingCart', component: ShoppingCartComponent },
   { path: '**', component: ErrorPageComponent },
 ];
 

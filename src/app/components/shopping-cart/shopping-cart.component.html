@@ -1,0 +1,15 @@
+<div>
+  <h1>Shopping Cart</h1>
+  <ng-container *ngFor="let item of allItems; let i = index">
+    <div style="display: flex; flex-direction: row; align-items: center">
+      <div><img [src]="item.imageUrl" /></div>
+      <div>{{ item.name }}</div>
+      <h3>${{ item.price }}</h3>
+      <button (click)="deleteItem(i)">Delete item</button>
+    </div>
+  </ng-container>
+  <div *ngIf="this.allItems.length <= 0">NOTHING TO BUY</div>
+  <button *ngIf="this.allItems.length > 0" (click)="buy()">
+    BUY EVERYTHING@@@@@@!!!!!!!!!!!!!!!
+  </button>
+</div>

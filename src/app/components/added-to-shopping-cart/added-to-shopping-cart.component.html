@@ -1,0 +1,8 @@
+<div style="display: flex; flex-direction: column; align-items: center">
+  <p>You have successfuly added to shopping cart a new item!!!</p>
+  <p>Do you want to check it?</p>
+  <div>
+    <button routerLink="/shoppingCart" (click)="closeModal()">yes</button>
+    <button (click)="bsModalRef.hide()">no</button>
+  </div>
+</div>

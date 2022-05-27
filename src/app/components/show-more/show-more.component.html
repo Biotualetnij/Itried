@@ -3,5 +3,7 @@
   <h2>{{ data.name }}</h2>
   <p>{{ data.description }}</p>
   <h3>${{ data.price }}</h3>
-  <button class="btn btn-primary">Take my Money</button>
+  <button class="btn btn-primary" (click)="addToShoppingCart(data)">
+    Take my Money
+  </button>
 </div>

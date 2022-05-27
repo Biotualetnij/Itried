@@ -17,6 +17,8 @@ import { ProfilePageComponent } from './components/profile-page/profile-page.com
 import { CreateItemComponent } from './components/create-item/create-item.component';
 import { ShowMoreComponent } from './components/show-more/show-more.component';
 import { DataService } from './dataService';
+import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
+import { AddedToShoppingCartComponent } from './components/added-to-shopping-cart/added-to-shopping-cart.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { DataService } from './dataService';
     ProfilePageComponent,
     CreateItemComponent,
     ShowMoreComponent,
+    ShoppingCartComponent,
+    AddedToShoppingCartComponent,
   ],
   imports: [
     BrowserModule,
